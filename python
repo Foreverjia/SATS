@@ -1,0 +1,83 @@
+import pyodbc 
+import json
+import requests
+import time
+from datetime import datetime, timedelta
+import utl
+HEADER_Alpaca =  { "APCA-API-KEY-ID":"PKRO296D7KZ8IBCWRSAJ",
+               "APCA-API-SECRET-KEY": "Ft1CpPV3naCVhKvfXXBvzxqXMQ5MpHELr80lCDJd",
+                "accept": "application/json"}
+
+def api_alpaca(symbol):
+
+    api_url = 'https://data.alpaca.markets/v2/stocks/'+symbol+'/quotes/latest?feed=iex'
+    headers = HEADER_Alpaca
+
+    requests.packages.urllib3.disable_warnings(
+        requests.packages.urllib3.exceptions.InsecureRequestWarning)
+
+    market_response = requests.get(api_url,verify = False,headers= headers)
+    #print(market_response.json())
+    #print(market_response.json()['quote']['ap'])
+    m = {}
+    m['Symbol'] = symbol
+    m['Price'] = market_response.json()['quote']['ap']
+    m['Trade_Time'] = datetime.strptime(market_response.json()['quote']['t'][:26],'%Y-%m-%dT%H:%M:%S.%f').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+    m['Source'] = 'alpaca_iex'
+    return m
+
+def api_alpaca_bars(symbol,interval):
+    if interval == '1Day':
+        
+        api_url = 'https://data.alpaca.markets/v2/stocks/'+symbol+'/bars?timeframe='+interval+'&start=2023-05-12T01%3A02%3A03.123456789Z&end=2024-09-17T00%3A00%3A00Z&limit=10000&adjustment=all&feed=sip&sort=asc'
+        headers = HEADER_Alpaca
+
+        requests.packages.urllib3.disable_warnings(
+            requests.packages.urllib3.exceptions.InsecureRequestWarning)
+
+        market_response = requests.get(api_url,verify = False,headers= headers)
+        #print(market_response.json())
+        #print(market_response.json()['quote']['ap'])
+        r = market_response.json()['bars']
+        return r
+
+def get_price():
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=.;DATABASE=SATS;UID=sats;PWD=87863872')
+    query = conn.cursor()
+    p = api_alpaca('QQQ')
+    i_stmt = "insert into {table} ({columns}) values {values};".format(table="Market_RealTime",columns = '[Symbol],[Price],[Trade_Time],[Source]',values = (p['Symbol'],p['Price'],p['Trade_Time'],p['Source']))
+    query.execute(i_stmt)
+    query.commit()
+
+def get_price_bars():
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=.;DATABASE=SATS;UID=sats;PWD=87863872')
+    query = conn.cursor()
+    p = api_alpaca_bars('QQQ','1Day')
+    for i in p:
+        i['Trade_Time'] = datetime.strptime(i['Trade_Time'][:26],'%Y-%m-%dT%H:%M:%S.%f').strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        i_stmt = "insert into {table} ({columns}) values {values};".format(table="Market_EOD",columns = '[Symbol],[Trade_Time],[Open],[High],[Low],[Close],[Adjusted_Close],[Interval],[Source]',values = (i['Symbol'],i['Trade_Time'],i['Open'],i['High'],i['Low'],i['Close'],i['Adjusted_Close'],i['Interval'],ip['Source']))
+        query.execute(i_stmt)
+        query.commit()
+
+
+def market_main():
+    utl.telegram(f'Market real time started.: {datetime.now().replace(microsecond=0)}') 
+    #get_price()
+    #print(api_alpaca('QQQ'))
+    always_loop = True
+    morning_check = None
+
+    while always_loop:
+        check_day = datetime.now().date()
+        if utl.market_open(datetime.now()):
+            if morning_check !=  check_day:
+                utl.telegram(f'{datetime.now().replace(microsecond=0)}  Market Open, quote started')
+
+            morning_check = check_day
+            get_price()
+            time.sleep(1)
+            print(datetime.now().time())
+
+market_main()
+
+
