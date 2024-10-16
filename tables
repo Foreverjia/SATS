@@ -1,6 +1,93 @@
+USE [master]
+GO
+/****** Object:  Database [SATS]    Script Date: 2024-10-16 7:52:21 AM ******/
+CREATE DATABASE [SATS]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'SATS', FILENAME = N'D:\SQLData\SATS.mdf' , SIZE = 2654080KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'SATS_log', FILENAME = N'D:\SQLLog\SATS_log.ldf' , SIZE = 25059328KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [SATS] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [SATS].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [SATS] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [SATS] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [SATS] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [SATS] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [SATS] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [SATS] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [SATS] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [SATS] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [SATS] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [SATS] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [SATS] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [SATS] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [SATS] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [SATS] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [SATS] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [SATS] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [SATS] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [SATS] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [SATS] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [SATS] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [SATS] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [SATS] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [SATS] SET RECOVERY FULL 
+GO
+ALTER DATABASE [SATS] SET  MULTI_USER 
+GO
+ALTER DATABASE [SATS] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [SATS] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [SATS] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [SATS] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [SATS] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [SATS] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'SATS', N'ON'
+GO
+ALTER DATABASE [SATS] SET QUERY_STORE = OFF
+GO
 USE [SATS]
 GO
-/****** Object:  Table [dbo].[BackTest_BatchData]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  User [sats]    Script Date: 2024-10-16 7:52:21 AM ******/
+CREATE USER [sats] FOR LOGIN [sats] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [sats]
+GO
+/****** Object:  Table [dbo].[BackTest_BatchData]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -17,7 +104,7 @@ CREATE TABLE [dbo].[BackTest_BatchData](
 	[effective_date] [date] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[BackTest_Prices]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[BackTest_Prices]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -46,7 +133,7 @@ CREATE TABLE [dbo].[BackTest_Prices](
 	[IsNoise2] [bit] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Backtest_Results]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Backtest_Results]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -62,13 +149,12 @@ CREATE TABLE [dbo].[Backtest_Results](
 	[Profit] [decimal](18, 4) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[BackTest_Strategy_Peak_V2]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[BackTest_Strategy_Peak_V2]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[BackTest_Strategy_Peak_V2](
-	[AccountName] [varchar](20) NULL,
 	[symbol] [varchar](10) NOT NULL,
 	[as_of_date] [datetime] NULL,
 	[s_key] [varchar](20) NULL,
@@ -77,7 +163,7 @@ CREATE TABLE [dbo].[BackTest_Strategy_Peak_V2](
 	[update_date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[EODHD_Crypto]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[EODHD_Crypto]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,7 +178,7 @@ CREATE TABLE [dbo].[EODHD_Crypto](
 	[Update_Date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[EODHD_EndOfDay]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[EODHD_EndOfDay]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -109,7 +195,7 @@ CREATE TABLE [dbo].[EODHD_EndOfDay](
 	[Update_Date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[EODHD_Intraday]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[EODHD_Intraday]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -127,7 +213,17 @@ CREATE TABLE [dbo].[EODHD_Intraday](
 	[Trade_Time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[EODHD_Live]    Script Date: 2024-10-11 12:10:16 PM ******/
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [ClusteredIndex-20230926-102527]    Script Date: 2024-10-16 7:52:21 AM ******/
+CREATE CLUSTERED INDEX [ClusteredIndex-20230926-102527] ON [dbo].[EODHD_Intraday]
+(
+	[Symbol] ASC,
+	[TradeTime] ASC,
+	[Update_Date] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EODHD_Live]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -140,7 +236,17 @@ CREATE TABLE [dbo].[EODHD_Live](
 	[Update_Date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[IB_Live]    Script Date: 2024-10-11 12:10:16 PM ******/
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [ClusteredIndex-20230926-102546]    Script Date: 2024-10-16 7:52:21 AM ******/
+CREATE CLUSTERED INDEX [ClusteredIndex-20230926-102546] ON [dbo].[EODHD_Live]
+(
+	[s] ASC,
+	[Update_Date] ASC,
+	[ms] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IB_Live]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -151,7 +257,7 @@ CREATE TABLE [dbo].[IB_Live](
 	[Update_Date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Market_EOD]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Market_EOD]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -169,7 +275,7 @@ CREATE TABLE [dbo].[Market_EOD](
 	[Update_Time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Market_Intraday]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Market_Intraday]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -187,7 +293,7 @@ CREATE TABLE [dbo].[Market_Intraday](
 	[Update_Time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Market_RealTime]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Market_RealTime]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -200,7 +306,7 @@ CREATE TABLE [dbo].[Market_RealTime](
 	[Update_Time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QQQ_EOD]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[QQQ_EOD]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -219,7 +325,7 @@ CREATE TABLE [dbo].[QQQ_EOD](
 	[update_date] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QQQ_Live]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[QQQ_Live]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -232,7 +338,7 @@ CREATE TABLE [dbo].[QQQ_Live](
 	[update_time] [datetime] NOT NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Trade_Accounts]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Trade_Accounts]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -250,7 +356,7 @@ CREATE TABLE [dbo].[Trade_Accounts](
 	[update_time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Trade_Orders]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Trade_Orders]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -265,14 +371,10 @@ CREATE TABLE [dbo].[Trade_Orders](
 	[StopPrice] [decimal](18, 2) NULL,
 	[Quantity] [int] NULL,
 	[effictive_date] [datetime] NULL,
-	[Update_Time] [datetime] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[TradeID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	[Update_Time] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Trade_Transactions]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  Table [dbo].[Trade_Transactions]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -286,11 +388,13 @@ CREATE TABLE [dbo].[Trade_Transactions](
 	[EntryCost] [decimal](18, 2) NULL,
 	[Quantity] [int] NULL,
 	[EntryPrice] [decimal](18, 2) NULL,
+	[EntryType] [varchar](20) NULL,
 	[StopPrice ] [decimal](18, 2) NULL,
 	[ExitPrice] [decimal](18, 2) NULL,
 	[ExitID] [uniqueidentifier] NULL,
 	[ExitDate] [datetime] NULL,
 	[ExitCost] [decimal](18, 2) NULL,
+	[ExitType] [varchar](20) NULL,
 	[Profit] [decimal](18, 2) NULL,
 	[Update_Time] [datetime] NULL
 ) ON [PRIMARY]
@@ -319,7 +423,7 @@ ALTER TABLE [dbo].[Trade_Orders] ADD  CONSTRAINT [CT_Trade_Orders]  DEFAULT (get
 GO
 ALTER TABLE [dbo].[Trade_Transactions] ADD  CONSTRAINT [CT_Trade_Transactions]  DEFAULT (getdate()) FOR [Update_Time]
 GO
-/****** Object:  StoredProcedure [dbo].[BackTest_Batch]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[BackTest_Batch]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -380,7 +484,7 @@ RETURN @BatchID
 END 
 
 GO
-/****** Object:  StoredProcedure [dbo].[BackTest_LastDay]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[BackTest_LastDay]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -401,7 +505,7 @@ BEGIN
 
 END 
 GO
-/****** Object:  StoredProcedure [dbo].[BackTest_Loop]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[BackTest_Loop]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -433,7 +537,7 @@ END
 
 END 
 GO
-/****** Object:  StoredProcedure [dbo].[BackTest_Strategy_01_MACD_V2]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[BackTest_Strategy_01_MACD_V2]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -543,7 +647,7 @@ IF OBJECT_ID('tempdb..#BackTest_Prices') IS NOT NULL
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[BackTest_Strategy_01_Peak_V2]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[BackTest_Strategy_01_Peak_V2]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -724,18 +828,6 @@ SELECT  symbol,@Max_EffectiveDate,
 FROM #BackTest_Prices
 WHERE (Peak_High_D =1 OR Peak_Low_D =1 ) AND effective_date > DATEADD(DAY,-20,@Max_EffectiveDate)
 
-INSERT INTO BackTest_Strategy_Peak_V2
-(symbol,as_of_date,s_key,s_date,s_value,update_date)
-SELECT  symbol,@Max_EffectiveDate,
-		CASE WHEN Peak_High_M =1 THEN 'Peak_M' WHEN Peak_Low_M=1 THEN 'Low_M' 
-		END AS s_key,
-		effective_date as s_date,
-		CASE WHEN Peak_High_M =1 THEN [high] WHEN Peak_Low_M=1 THEN [Low] 
-		END AS s_value, 
-
-		GETDATE() 
-FROM #BackTest_Prices
-WHERE Peak_High_M =1 OR Peak_Low_M =1
 
 INSERT INTO BackTest_Strategy_Peak_V2
 (symbol,as_of_date,s_key,s_date,s_value,update_date)
@@ -749,6 +841,19 @@ SELECT  symbol,@Max_EffectiveDate,
 		GETDATE() 
 FROM #BackTest_Prices
 WHERE (Peak_High_W =1 OR Peak_Low_W =1 )AND effective_date > DATEADD(DAY,-100,@Max_EffectiveDate)
+
+INSERT INTO BackTest_Strategy_Peak_V2
+(symbol,as_of_date,s_key,s_date,s_value,update_date)
+SELECT  symbol,@Max_EffectiveDate,
+		CASE WHEN Peak_High_M =1 THEN 'Peak_M' WHEN Peak_Low_M=1 THEN 'Low_M' 
+		END AS s_key,
+		effective_date as s_date,
+		CASE WHEN Peak_High_M =1 THEN [high] WHEN Peak_Low_M=1 THEN [Low] 
+		END AS s_value, 
+
+		GETDATE() 
+FROM #BackTest_Prices
+WHERE Peak_High_M =1 OR Peak_Low_M =1
 
 -- Percent and Daily
 SELECT @Last_Close =  (SELECT [close] FROM #BackTest_Prices WHERE batchID = @BatchID AND quoteID = @Max_QuoteID -1 )
@@ -767,45 +872,85 @@ FROM (SELECT symbol,effective_date,[low],[high],[open],[close],[percent] FROM #B
 UNPIVOT  (s_value FOR s_key IN ([low],[high],[open],[close],[percent]))AS unpvt
 
 --Needle Pattern
+--DECLARE @Open [decimal](18, 2),@High [decimal](18, 2),@Close [decimal](18, 2),@Low [decimal](18, 2)
+--DECLARE @Upper_shadow [decimal](18, 2),@Lower_shadow [decimal](18, 2),@Body [decimal](18, 2)
+
+--SELECT @Low  =[low],@High = [high],@Open=[open],@Close=[close] FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+
+--SET @Upper_shadow = (@High - CASE WHEN @Open > @Close THEN @Open ELSE @Close END) / @Open *100
+--SET @Lower_shadow = (CASE WHEN @Open < @Close THEN @Open ELSE @Close END - @Low) / @Open  * 100
+--SET @Body = ABS(@Close-@Open)/@Open * 100
+
+--IF @Lower_shadow > @Body 
+--AND (@Lower_shadow >0.8)
+--AND (@Upper_shadow < @Lower_shadow*0.7) 
+--AND ((@Close > @Open) OR (@Close < @Open AND @Body < 0.5))
+
+--BEGIN
+--	INSERT INTO BackTest_Strategy_Peak_V2
+--	(symbol,as_of_date,s_key,s_date,s_value,update_date)
+--	SELECT symbol,effective_date as as_of_date,'Needle',NULL,@Lower_shadow,GETDATE()
+--	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+--END 
+
+--IF (@Close > @Open)
+----AND (@Lower_shadow < 0.5)
+----AND (@Upper_shadow < 0.5) 
+--AND (@Body > 2.5 OR (@Body +@Lower_shadow)>2.5)
+
+
+--BEGIN
+--	INSERT INTO BackTest_Strategy_Peak_V2
+--	(symbol,as_of_date,s_key,s_date,s_value,update_date)
+--	SELECT symbol,effective_date as as_of_date,'LongGreen',NULL,@Lower_shadow,GETDATE()
+--	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+--END 
+
+
+--IF @Body > 2.5
+--AND (@Lower_shadow < 0.5)
+--AND (@Upper_shadow < 0.5) 
+--AND (@Close < @Open)
+
+--BEGIN
+--	INSERT INTO BackTest_Strategy_Peak_V2
+--	(symbol,as_of_date,s_key,s_date,s_value,update_date)
+--	SELECT symbol,effective_date as as_of_date,'LongRed',NULL,@Lower_shadow,GETDATE()
+--	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+--END 
+
+--IF (@Close - @High)/@Close *100 <-2.0
+
+--BEGIN
+--	INSERT INTO BackTest_Strategy_Peak_V2
+--	(symbol,as_of_date,s_key,s_date,s_value,update_date)
+--	SELECT symbol,effective_date as as_of_date,'Red2',NULL, (@Close - @High)/@Close *100,GETDATE()
+--	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+--END 
+
 DECLARE @Open [decimal](18, 2),@High [decimal](18, 2),@Close [decimal](18, 2),@Low [decimal](18, 2)
 DECLARE @Upper_shadow [decimal](18, 2),@Lower_shadow [decimal](18, 2),@Body [decimal](18, 2)
-
-SELECT @Low  =[low],@High = [high],@Open=[open],@Close=[close] FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
+DECLARE @Symbol VARCHAR(10)
+SELECT @Symbol=[symbol],@Low  =[low],@High = [high],@Open=[open],@Close=[close] FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
 
 SET @Upper_shadow = (@High - CASE WHEN @Open > @Close THEN @Open ELSE @Close END) / @Open *100
 SET @Lower_shadow = (CASE WHEN @Open < @Close THEN @Open ELSE @Close END - @Low) / @Open  * 100
-SET @Body = ABS(@Close-@Open)/@Open * 100
+SET @Body = (@Close-@Open)/@Open * 100
 
-IF @Lower_shadow > @Body 
-AND (@Lower_shadow >0.8)
-AND (@Upper_shadow < 0.3) 
-AND (@Close > @Open)
-
-BEGIN
-	INSERT INTO BackTest_Strategy_Peak_V2
-	(symbol,as_of_date,s_key,s_date,s_value,update_date)
-	SELECT symbol,effective_date as as_of_date,'Needle',NULL,@Lower_shadow,GETDATE()
-	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
-END 
-
-IF @Body > 3
-AND (@Lower_shadow < 0.5)
-AND (@Upper_shadow < 0.5) 
-AND (@Close > @Open)
-
-BEGIN
-	INSERT INTO BackTest_Strategy_Peak_V2
-	(symbol,as_of_date,s_key,s_date,s_value,update_date)
-	SELECT symbol,effective_date as as_of_date,'LongGreen',NULL,@Lower_shadow,GETDATE()
-	FROM #BackTest_Prices WHERE batchID=@BatchID AND quoteID=@Max_QuoteID
-END 
+INSERT INTO BackTest_Strategy_Peak_V2
+(symbol,as_of_date,s_key,s_date,s_value,update_date)
+VALUES(@Symbol, @Max_EffectiveDate,'Upper_shadow',NULL, @Upper_shadow,GETDATE()),
+(@Symbol, @Max_EffectiveDate,'Lower_shadow',NULL, @Lower_shadow,GETDATE()),
+(@Symbol, @Max_EffectiveDate,'Body',NULL, @Body,GETDATE())
 
 SET @OutputDateTime =@Max_EffectiveDate
 
-END
+-- All Time High
 
+
+END
 GO
-/****** Object:  StoredProcedure [dbo].[Debug]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[Debug]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -828,10 +973,10 @@ BEGIN
 			TotalAsset = NULL
 	FROM Trade_Accounts A
 
-	exec BackTest_Loop 'QQQ', '2020-01-16','2024-09-20'
+	exec BackTest_Loop 'QQQ', '2020-01-01','2024-09-20'
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Trade_ExecuteOrder]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[Trade_ExecuteOrder]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -850,7 +995,7 @@ CREATE PROCEDURE [dbo].[Trade_ExecuteOrder](
 BEGIN
 
 DECLARE @TradeID UNIQUEIDENTIFIER
-	IF @OrderType = 'Buy'
+	IF @OrderType like 'Buy%'
 	BEGIN
 
 		SET @TradeID = NEWID()
@@ -858,8 +1003,8 @@ DECLARE @TradeID UNIQUEIDENTIFIER
 		INSERT INTO Trade_Orders (AccountName,Symbol,TradeID ,OrderType, Price, Quantity,effictive_date, StopPrice,update_time)
 		VALUES (@AccountName,@Symbol, @TradeID,@OrderType, @Price, @Quantity, @effictive_date,@StopPrice,GETDATE());
 
-		INSERT INTO Trade_Transactions (AccountName,Symbol,EntryPrice,EntryID,EntryDate,EntryCost,Quantity,StopPrice,Update_Time)
-		VALUES (@AccountName,@Symbol,@Price, @TradeID,@effictive_date,@Price*@Quantity,@Quantity,@StopPrice,GETDATE());
+		INSERT INTO Trade_Transactions (AccountName,Symbol,EntryPrice,EntryID,EntryDate,EntryCost,EntryType,Quantity,StopPrice,Update_Time)
+		VALUES (@AccountName,@Symbol,@Price, @TradeID,@effictive_date,@Price*@Quantity,@OrderType,@Quantity,@StopPrice,GETDATE());
 		
 		UPDATE A
 		SET 
@@ -876,7 +1021,7 @@ DECLARE @TradeID UNIQUEIDENTIFIER
 
 	END 
 		
-	IF @OrderType = 'StopLoss' OR @OrderType ='Sell'
+	IF @OrderType = 'StopLoss' OR @OrderType like 'Sell%'
 	BEGIN
 		DECLARE @EntryID UNIQUEIDENTIFIER
 		SET @EntryID = (SELECT EntryID  FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL AND AccountName = @AccountName)
@@ -892,6 +1037,7 @@ DECLARE @TradeID UNIQUEIDENTIFIER
 			ExitID = @TradeID,
 			ExitDate = @effictive_date,
 			ExitCost = @Price * @Quantity,
+			ExitType = @OrderType,
 			Profit = @Price*@Quantity - EntryCost
 		FROM Trade_Transactions T
 		WHERE T.EntryID = @EntryID 
@@ -910,8 +1056,11 @@ DECLARE @TradeID UNIQUEIDENTIFIER
 		WHERE AccountName = @AccountName
 	END
 END
+
+/****** Object:  StoredProcedure [dbo].[BackTest_Strategy_01_Peak_V2]    Script Date: 10/12/2024 9:17:48 PM ******/
+SET ANSI_NULLS ON
 GO
-/****** Object:  StoredProcedure [dbo].[Trade_Strategy]    Script Date: 2024-10-11 12:10:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[Trade_Strategy]    Script Date: 2024-10-16 7:52:21 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -926,6 +1075,7 @@ BEGIN
 	DECLARE @Quantity INT
 	DECLARE @TradeID uniqueidentifier,@EntryID uniqueidentifier
 	DECLARE @Open DECIMAL(18, 2), @Low DECIMAL(18, 2), @High DECIMAL(18, 2),@Close DECIMAL(18, 2)
+	DECLARE @Upper_shadow [decimal](18, 2),@Lower_shadow [decimal](18, 2),@Body [decimal](18, 2)
 
 	DECLARE @effictive_date_1 DATETIME,@effictive_date_2 DATETIME, @effictive_date_3 DATETIME
 
@@ -937,47 +1087,149 @@ BEGIN
 	SET @Open = (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Open')
 	SET @Low = (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Low')
 	SET @High= (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='High')
+	SET @Upper_shadow = (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Upper_shadow')
+	SET @Lower_shadow = (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Lower_shadow')
+	SET @Body = (SELECT s_value FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Body')
 
 	SET @effictive_date_1 = (SELECT MAX(as_of_date) FROM BackTest_Strategy_Peak_V2 WHERE as_of_date < @effictive_date)
 	SET @effictive_date_2 = (SELECT MAX(as_of_date) FROM BackTest_Strategy_Peak_V2 WHERE as_of_date < @effictive_date_1)
 	SET @effictive_date_3 = (SELECT MAX(as_of_date) FROM BackTest_Strategy_Peak_V2 WHERE as_of_date < @effictive_date_2)
+	
+	DECLARE @Diff DECIMAL(18, 2)
+	SET @Diff = 0.997
+	DECLARE @Pattern VARCHAR(20)
+
+	IF (@Close > @Open) AND (@Body > 2.5 OR (@Body +@Lower_shadow)>2.5)--AND (@Lower_shadow < 0.5)AND (@Upper_shadow < 0.5) 
+	BEGIN SET @Pattern = 'LongGreen' END
+
+	IF @Lower_shadow > @Body AND (@Lower_shadow >0.8) AND ( @Upper_shadow < @Lower_shadow*0.7) AND ((@Close > @Open) OR (@Close < @Open AND @Body < 0.5))
+	BEGIN SET @Pattern = 'Needle' END
+	   
+	IF (@Body > 3.0 AND (@Lower_shadow < 0.5) AND (@Upper_shadow < 0.5) AND (@Close < @Open) )
+	OR ( (@Body +  @Upper_shadow )> 2.5 AND (@Close < @Open) )
+	BEGIN SET @Pattern = 'LongRed' END
+
+    IF @Pattern IS NOT NULL
+	BEGIN PRINT CAST(@effictive_date AS VARCHAR )
+		  PRINT @Pattern
+	END
 
 --Buy Strategy
-	IF EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Needle' ) AND
-		NOT EXISTS (SELECT * FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL)
+IF NOT EXISTS (SELECT * FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL AND AccountName = @AccountName)
+BEGIN
+	--BuyBottom
+	IF (@Pattern = 'LongGreen' OR @Pattern = 'Needle' ) AND
+	   EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE s_date=@effictive_date AND s_key='Low_W' AND as_of_date = @effictive_date ) AND
+	   EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE s_date=@effictive_date AND s_key='Low_M' AND as_of_date = @effictive_date ) 
 	BEGIN
 
 		SET @Price = @Close
 		SET @Quantity = FLOOR((@Cash/@Price)/ 10.0) * 10
-		SET @StopPrice = (SELECT s_value*0.998 FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Low')
+		SET @StopPrice = (SELECT s_value*@Diff FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date and s_key ='Low')
 
-		EXEC Trade_ExecuteOrder @effictive_date, 'Buy',	@Symbol, @Price , @Quantity , @StopPrice , @Cash ,	@AccountName 
+		EXEC Trade_ExecuteOrder @effictive_date, 'BuyBottom',	@Symbol, @Price , @Quantity , @StopPrice , @Cash ,	@AccountName 
 		
 	END
-	
---Sell Strategy// Stop Loss
-	--IF EXISTS (SELECT * FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL)
-	--BEGIN
-	--	SET @StopPrice = (SELECT StopPrice FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL AND AccountName = @AccountName)
-		
-	--	IF @Close < @StopPrice 
-	--	BEGIN 
-	--		SET @Price = @Close		
-	--		EXEC Trade_ExecuteOrder @effictive_date, 'StopLoss',@Symbol, @Price , NULL , @StopPrice , @Cash ,@AccountName 
-	--	END
-	--END 
 
-	IF EXISTS (SELECT * FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL) AND
-	EXISTS(SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date AND s_key='Percent' AND s_value <-2.5 )
+	----Buy Needle
+	--IF EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date_1 and s_key ='Needle' ) AND
+	--   EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date AND s_key='Percent' AND s_value >0.2) 
+	--BEGIN
+
+	--	SET @Price = @Close
+	--	SET @Quantity = FLOOR((@Cash/@Price)/ 10.0) * 10
+	--	SET @StopPrice = (SELECT s_value*@Diff FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date_1 and s_key ='Low')
+
+	--	EXEC Trade_ExecuteOrder @effictive_date, 'BuyNeedle',	@Symbol, @Price , @Quantity , @StopPrice , @Cash ,	@AccountName 
+		
+	--END
+
+	--Buy Long Green
+	--ELSE IF EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date_1 and s_key ='LongGreen' ) AND
+	--   EXISTS( SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date AND s_key='Percent' AND s_value >0.2)
+	--BEGIN
+
+	--	SET @Price = @Close
+	--	SET @Quantity = FLOOR((@Cash/@Price)/ 10.0) * 10
+	--	SET @StopPrice = (SELECT s_value*@Diff FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date_1 and s_key ='Low')
+
+	--	EXEC Trade_ExecuteOrder @effictive_date, 'BuyLong',	@Symbol, @Price , @Quantity , @StopPrice , @Cash ,	@AccountName 
+		
+	--END
+
+	-- Buy Right Side
+	IF EXISTS (SELECT * FROM Trade_Orders WHERE OrderType IN ('SellPeak_M')
+					AND TradeNo = (SELECT MAX(TradeNo) FROM Trade_Orders WHERE  AccountName = @AccountName))
+	AND EXISTS (SELECT * FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Peak_M' AND s_date = @effictive_date))
+	BEGIN
+
+		DECLARE @Recent_Low DECIMAL(18, 2)
+		--SELECT @Recent_Low = s_value FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Low_W' AND s_date = 
+		--								(SELECT MAX(s_date) FROM BackTest_Strategy_Peak_V2  WHERE as_of_date = @effictive_date AND s_key='Low_W'))
+		SELECT @Recent_Low = MIN(s_value) FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Low_D' )
+
+		SET @Price = @Close
+			--print cast (@effictive_date as varchar)
+			--print @Price
+			--print @Cash
+		SET @Quantity = FLOOR((@Cash/@Close)/ 10.0) * 10
+		SET @StopPrice = @Recent_Low * @Diff
+
+		EXEC Trade_ExecuteOrder @effictive_date, 'BuyRight', @Symbol, @Price , @Quantity , @StopPrice , @Cash ,	@AccountName 
+		--END
+	END
+END
+
+--Sell Strategy
+ELSE
+BEGIN
+--// Stop Loss
+	SET @StopPrice = (SELECT StopPrice FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL AND AccountName = @AccountName)
+		
+	IF @Low < @StopPrice 
+	BEGIN 
+		SET @Price = @StopPrice 
+		EXEC Trade_ExecuteOrder @effictive_date, 'StopLoss',@Symbol, @Price , NULL , @StopPrice , @Cash ,@AccountName 
+	END
+
+--Sell Peak_M
+	IF EXISTS (SELECT * FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Peak_M' AND s_date = @effictive_date)
+															OR (as_of_date = @effictive_date_1 AND s_key='Peak_M' AND s_date = @effictive_date_1)
+															OR (as_of_date = @effictive_date_2 AND s_key='Peak_M' AND s_date = @effictive_date_2)
+															)
+	AND EXISTS	(SELECT * FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Percent' AND s_value <-2.0 ) OR (as_of_date = @effictive_date AND s_key= 'Red2' ))
 
 	BEGIN
-			SET @Price = @Close
-			
-			EXEC Trade_ExecuteOrder @effictive_date, 'Sell',@Symbol, @Price , NULL , NULL , @Cash ,@AccountName 
+
+		SET @Price = @Close
+		EXEC Trade_ExecuteOrder @effictive_date, 'SellPeak_M',@Symbol, @Price , NULL , NULL , @Cash ,@AccountName 
 
 	END 
+--Sell Peak_W
+	--IF EXISTS(SELECT * FROM BackTest_Strategy_Peak_V2 WHERE (as_of_date = @effictive_date AND s_key='Peak_W' AND s_date = @effictive_date)
+	--														OR (as_of_date = @effictive_date_1 AND s_key='Peak_W' AND s_date = @effictive_date_1)
+	--														OR (as_of_date = @effictive_date_2 AND s_key='Peak_W' AND s_date = @effictive_date_2)
+	--										)
+	--AND EXISTS(SELECT * FROM BackTest_Strategy_Peak_V2 WHERE as_of_date = @effictive_date AND s_key='Percent' AND s_value <-2.0 )
+	--And EXISTS (SELECT * FROM Trade_Transactions WHERE EntryID IS NOT NULL AND ExitID IS NULL AND AccountName = @AccountName) 
+
+	--BEGIN
+	--		SET @Price = @Close	
+	--		EXEC Trade_ExecuteOrder @effictive_date, 'SellPeak_W',@Symbol, @Price , NULL , NULL , @Cash ,@AccountName 
+
+	--END 
 
 
     -- Call external broker API to place the trade
-END;
+END
+
+
+END
+
+/****** Object:  StoredProcedure [dbo].[Trade_ExecuteOrder]    Script Date: 10/12/2024 9:17:51 PM ******/
+
+GO
+USE [master]
+GO
+ALTER DATABASE [SATS] SET  READ_WRITE 
 GO
